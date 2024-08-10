@@ -1,0 +1,54 @@
+┌──(kali㉿kali)-[~]
+└─$ ls
+a  ceo.txt  ceo.zip.txt  Desktop    Downloads  hash.txt  MIA    noura.txt  Public     test.txt  zero_day
+b  ceo.zip  ceo.zip.zip  Documents  file.txt   hello.py  Music  Pictures   Templates  Videos
+                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ cd MIA           
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ mkdir sh                   
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+sh
+
+                                                                                                                                                           
+┌──(kali㉿kali)-[~/MIA]
+└─$ vi README.md 
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+README.md  sh
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ rm sh      
+rm: cannot remove 'sh': Is a directory
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ rm -r sh   
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+README.md
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ pwd
+/home/kali/MIA
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ vi sh       
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+README.md  sh
+
+──(kali㉿kali)-[~/MIA]
+└─$ mv sh ss            
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/MIA]
+└─$ ls
+README.md  ss
