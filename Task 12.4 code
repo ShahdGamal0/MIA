@@ -1,0 +1,83 @@
+class PID {
+  private:
+    double Kp, Ki, Kd;
+    double integral, previousError, deltaTime;
+    double integralLimit = 100;
+
+  public:
+    PID(double p, double i, double d, double dt) {
+      Kp = p;
+      Ki = i;
+      Kd = d;
+      deltaTime = dt;
+      integral = 0;
+      previousError = 0;
+    }
+
+    double calculate(double setpoint, double input) {
+      double error = setpoint - input;
+      double Pout = Kp * error;
+
+      integral += error * deltaTime;
+      if (integral > integralLimit) integral = integralLimit;
+      if (integral < -integralLimit) integral = -integralLimit;
+      double Iout = Ki * integral;
+
+      double derivative = (error - previousError) / deltaTime;
+      double Dout = Kd * derivative;
+
+      previousError = error;
+
+      return Pout + Iout + Dout;
+    }
+};
+
+double softStart(double target, double current, double alpha) {
+  return alpha * target + (1 - alpha) * current;
+}
+
+const int motorPinPWM = 10;
+const int motorPin1 = 8;
+const int motorPin2 = 9;
+const int potPin = A0;
+
+PID motorPID(2.0, 5.0, 1.0, 0.1);
+
+double setpoint = 0;
+double motorSpeed = 0;
+double output = 0;
+double previousOutput = 0;
+
+void setup() {
+  pinMode(motorPinPWM, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  pinMode(potPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  setpoint = analogRead(potPin) * 255.0 / 1023.0;
+
+  motorSpeed += (setpoint - motorSpeed) * 0.1;
+
+  output = motorPID.calculate(setpoint, motorSpeed);
+  output = constrain(output, 0, 255);
+
+  double smoothedOutput = softStart(output, previousOutput, 0.1);
+
+  digitalWrite(motorPin1, HIGH);
+  digitalWrite(motorPin2, LOW);
+  analogWrite(motorPinPWM, smoothedOutput);
+
+  previousOutput = smoothedOutput;
+
+  Serial.print("Setpoint: ");
+  Serial.print(setpoint);
+  Serial.print(" Motor Speed: ");
+  Serial.print(motorSpeed);
+  Serial.print(" PID Output: ");
+  Serial.println(smoothedOutput);
+
+  delay(100);
+}
